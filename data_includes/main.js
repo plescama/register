@@ -1,7 +1,7 @@
     PennController.ResetPrefix(null); // Initiates PennController
-    PennController.AddHost("https://amor.cms.hu-berlin.de/home/session/public_html/Bild")
+    PennController.AddHost("https://amor.cms.hu-berlin.de/~plescama/Bild/")
        // "https://amor.cms.hu-berlin.de/~plescama/Bild/"); // loads pictures from external server
-    PennController.Sequence("welcome", "experiment", "send", "final")
+    PennController.Sequence("welcome", randomize("experiment"), "send", "final")
     // Welcome text /////////////
    
 
@@ -9,18 +9,20 @@
         defaultText
             .print()
         ,
-        newText("text1", "<p>Willkommen zum Experiment</p>")
+        newText("text1", "<p>Willkommen zum Experiment!</p>")
+
         ,
-        newText("text2", "<p>Humboldt Universit&auml;t zu Berlin, Institut f&uuml;uer Deutsche Sprache und Linguistik</p>")
+        newText("text3", "Danke, dass Du dir die Zeit nimmst, an unserem Experiment teilzunehmen. Bevor es losgeht, brauchen wir noch ein Paar Informationen von Dir.")
         ,
-        newButton("button1", "Best&auml;tigen")
+        newButton("button1", "Fortsetzen")
             .print()
             .wait()
         ,
         getText("text1")
             .remove()
+ 
         ,
-        getText("text2")
+        getText("text3")
             .remove()
         ,
         getButton("button1")
@@ -30,8 +32,9 @@
             .settings.log()
             .print()
         ,
-        newButton("button2", "Continue")
+        newButton("button2", "Fortsetzen")
             .print()
+            .settings.center()
             .wait(getHtml("consentInfo").test.complete()
                 .failure( getHtml("consentInfo").warn() ) // wait and display  warning message if not all the obligatory fields in the html document are filled
              )   
@@ -42,31 +45,35 @@
         getButton("button2")
             .remove()
         ,
-        newHtml("instructions", "instructions.html")
+        newHtml("VPInfo", "VPInfo.html")
             .print()
         ,
-        newButton("button3", "continue")
+        newButton("button3", "Fortsetzen")
             .print()
             .wait()
         ,
-        getHtml("instructions")
+        getHtml("VPInfo")
             .remove()
         ,
         getButton("button3")
             .remove()
         ,
-        newHtml("VPInfo", "VPInfo.html")
+        newHtml("instructions", "instructions.html")
             .settings.log() // log inputs in html
             .print()
         ,
-        newButton("start")
+        newButton("start", "Experiment starten")
             .print()
             .wait(
-              getHtml("VPInfo").test.complete()
-                .failure( getHtml("VPInfo").warn() )
+              getHtml("instructions").test.complete()
+                .failure( getHtml("instructions").warn() )
             )
     )
-
+     
+        PennController.CheckPreloaded(
+        startsWith("Absteige")
+    )
+        
         PennController("experiment",
     newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Absteige</strong> beschreibt.")
         .print()
@@ -84,7 +91,7 @@
     ,
     newSelector("choice")
         .settings.add(getImage("one"), getImage("two"))
-        .settings.visible()
+        .settings.once() // the first selection is definitive
         .settings.log()
         .wait()
     ,
@@ -96,40 +103,15 @@
         
        )
      
-    PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Latschen </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Latschen1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Latschen2.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center ()
-    .print()
-    .wait()
-       )
    
-        PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Wohnung</strong> beschreibt.")
+    PennController("experiment",
+    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Behausung </strong> beschreibt.")
         .print()
     ,
-    newImage("one", "Wohnung1.jpg")
+    newImage("one", "Behausung1.jpg")
         .settings.size(150,200)
     ,
-    newImage("two", "Wohnung2.jpg")
+    newImage("two", "Behausung2.jpg")
          .settings.size(150,200)
     ,
     newCanvas(450,200)
@@ -148,6 +130,7 @@
     .wait()
        )
         
+       
     PennController("experiment",
     newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Behausung </strong> beschreibt.")
         .print()
@@ -200,164 +183,6 @@
     .wait()
        )
     
-      PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Lauscher </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Lauscher1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Lauscher3.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )
-    
-      PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Lauscher </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Lauscher2.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Lauscher3.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )     
-        
-     PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Gem&auml;cher </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Gem�cher1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Gem�cher2.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )
-   
-      
-     PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Kammer </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Kammer1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Kammer2.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )
-        
-   PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> P&ouml;tte </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Pötte1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Pötte2.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )
-       
-   PennController("experiment",
-    newText("W&auml;hlen Sie bitte das Bild, das am Besten das Wort <strong> Gr&uuml;nzeug </strong> beschreibt.")
-        .print()
-    ,
-    newImage("one", "Grünzeug1.jpg")
-        .settings.size(150,200)
-    ,
-    newImage("two", "Grünzeug2.jpg")
-         .settings.size(150,200)
-    ,
-    newCanvas(450,200)
-        .settings.add(0,0,getImage("one"))
-        .settings.add(250,0, getImage("two"))
-        .print()
-    ,
-    newSelector()
-        .settings.add(getImage("one"), getImage("two"))
-        .settings.log()
-        .wait()
-    ,
-    newButton("validation", "Best&auml;tigen")
-    .settings.center()
-    .print()
-    .wait()
-       )  
-    
-  
   
         
    PennController.SendResults("send")
